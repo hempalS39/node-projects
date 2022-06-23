@@ -7,12 +7,12 @@ const authorSchema = new mongoose.Schema({
         required: true,
         trim:true
     },
-    firstName: {
+    fName: {
         type: String,
         required: true,
         trim:true
     },
-    lastName: {
+    lName: {
         type: String,
         required: true,
         trim:true

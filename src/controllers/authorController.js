@@ -1,6 +1,6 @@
 const AuthorModel = require("../models/authorModel")
 
-// const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken")
 
 const valid = function (value) {
 
@@ -15,17 +15,21 @@ const createAuthor = async function (req, res) {
         
         if (!author.title) { return res.status(400).send({ status: false, message: "title is required" }) }
 
-        if (!author.firstName) { return res.status(400).send({ status: false, message: "author first name is required" }) }
+        if (!author.fName) { return res.status(400).send({ status: false, message: "author first name is required" }) }
 
-        if (!author.lastName) { return res.status(400).send({ status: false, message: "author last name is required" }) }
+        if (!author.lName) { return res.status(400).send({ status: false, message: "author last name is required" }) }
 
         if (!author.email) { return res.status(400).send({ status: false, message: "email is required" }) }
 
         if (!author.password) { return res.status(400).send({ status: false, message: "password is required" }) }
-         
-        if (!valid(author.firstName)) { return res.status(400).send({ status: false, message: "author first name is not valid" }) }
 
-        if (!valid(author.lastName)) { return res.status(400).send({ status: false, message: "author last name must is not valid " }) }
+        if (!valid(author.title)) { return res.status(400).send({ status: false, message: "title is invalid" }) }
+
+        if (["Mr", "Mrs", "Miss"].indexOf(author.title)== -1) { return res.status(400).send({ status: false, message: "title should be Mr,Miss,Mrs" }) }
+         
+        if (!valid(author.fName)) { return res.status(400).send({ status: false, message: "author first name is not valid" }) }
+
+        if (!valid(author.lName)) { return res.status(400).send({ status: false, message: "author last name must is not valid " }) }
 
         if (!valid(author.password)) { return res.status(400).send({ status: false, message: "password name is not valid" }) }
 
@@ -33,9 +37,35 @@ const createAuthor = async function (req, res) {
         res.status(201).send({ status:true,data: authorCreated })
         }
      catch (err) { return res.status(500).send({ status: false, msg: err.message }) }
+
+}
+
+
+const authorLogIn = async function (req, res) {
+    let data1 = req.body.email;
+    let data2 = req.body.password;
+
+    if (!data1) { return res.status(400).send({ status: false, message: "email is required" }) }
+
+    if (!data2) { return res.status(400).send({ status: false, message: "password is required" }) }
+
+    let checkData = await AuthorModel.findOne({ email: data1, password: data2 });
+    
+    if (!checkData) {
+        res.status(404).send({ status: false, msg: 'Invalid Credential' });
+    }
+    else {
+        let token = jwt.sign({ userId: checkData._id.toString() }, "functionUp");
+        res.setHeader("x-api-key",token);
+        // res.setHeader("x-userId",checkData._id)
+        console.log(token)
+        res.status(200).send({status:true,data:"logged in successfully"})
+        
+    }
 }
 
 
 
 
 module.exports.createAuthor= createAuthor
+module.exports.authorLogIn = authorLogIn

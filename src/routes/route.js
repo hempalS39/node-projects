@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-// const AuthorModel= require("../models/authorModel")
+
 const AuthorController= require("../controllers/authorController")
 const BlogController= require("../controllers/blogController")
+const Middleware = require("../middleware/auth")
 
 
 
@@ -12,11 +13,21 @@ router.get("/test-me", function (req, res) {
 
 router.post("/authors", AuthorController.createAuthor  )
 
-router.post("/blogs", BlogController.createBlog)
+router.post("/blogs",Middleware.authentication, BlogController.createBlog)
 
-router.get("/blogs",BlogController.blogList)
+router.get("/blogs",Middleware.authentication,BlogController.blogList)
 
-router.put("/blogs/:blogId",BlogController.updateBlog)
+router.put("/blogs/:blogId",Middleware.authentication,Middleware.authorization,BlogController.updateBlog)
+
+router.delete("/blogs/:blogId",Middleware.authentication,Middleware.authorization,BlogController.deleteBlogById)
+
+router.delete("/blogs",Middleware.authentication,Middleware.authorization,BlogController.deleteByQuerying)
+
+router.post("/login", AuthorController.authorLogIn)
+
+
+
+
 
 
 module.exports = router;
