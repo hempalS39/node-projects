@@ -13,6 +13,9 @@ router.get("/test-me", function (req, res) {
 
 router.post("/authors", AuthorController.createAuthor  )
 
+router.post("/login", AuthorController.authorLogIn)
+
+
 router.post("/blogs",Middleware.authentication, BlogController.createBlog)
 
 router.get("/blogs",Middleware.authentication,BlogController.blogList)
@@ -21,9 +24,9 @@ router.put("/blogs/:blogId",Middleware.authentication,Middleware.authorization,B
 
 router.delete("/blogs/:blogId",Middleware.authentication,Middleware.authorization,BlogController.deleteBlogById)
 
-router.delete("/blogs",Middleware.authentication,Middleware.authorization,BlogController.deleteByQuerying)
+router.delete("/blogs",Middleware.authentication, Middleware.deleteByquerying, BlogController.deleteByQuerying)
 
-router.post("/login", AuthorController.authorLogIn)
+
 
 
 

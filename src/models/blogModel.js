@@ -11,7 +11,7 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    author_Id: {
+    authorId: {
         type: ObjectId,
         ref: "Author",
         required:true
@@ -21,7 +21,7 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    subCategory: [String],
+    subcategory: [String],
 
     publishedAt: String,
 
@@ -31,7 +31,7 @@ const blogSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    isDeletedAt: String,
+    deletedAt: String,
     isPublished: {
         type: Boolean,
         default: false
