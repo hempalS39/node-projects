@@ -37,6 +37,7 @@ const createUrl = async function (req, res) {
       return res
         .status(400)
         .send({ status: false, message: "<longURL> NOT a Valid URL Format." });
+    
     }
 
     const longUrlUnique = await urlModel.findOne({ longUrl });
