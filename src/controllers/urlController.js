@@ -63,7 +63,9 @@ const createUrl = async function (req, res) {
     }
 
     let cachesUrlData = await GET_ASYNC(`${req.body.longUrl}`);
-
+    // console.log(typeof(cachesUrlData))
+    
+    // console.log(typeof(JSON.parse(cachesUrlData)))
     if (cachesUrlData) {
       return res.status(200).send({
         status: true,
@@ -92,8 +94,11 @@ const createUrl = async function (req, res) {
         shortUrl: createData.shortUrl,
         urlCode: createData.urlCode,
       };
+      // console.log(typeof(result))
+
 
       await SET_ASYNC(`${req.body.longUrl}`, JSON.stringify(result));
+      // console.log(typeof(JSON.stringify(result)))
 
       return res.status(201).send({
         status: true,
